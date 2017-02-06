@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace COMP1004_Lesson41
         private string _operand1;
         private string _operand2;
         private bool _isCalculatorClear;
+        private string _calculatorFormLayout;
 
         //Constructors++++++++++++++++++++++
 
@@ -31,6 +33,22 @@ namespace COMP1004_Lesson41
             InitializeComponent();
 
             this._clearCalulator();
+            this.CalculatorFormLayout = "Standard";
+        }
+
+        //PUBLIC PROPERTIES++++++++++++++++++
+
+        public string CalculatorFormLayout
+        {
+            get
+            {
+                return this._calculatorFormLayout;
+            }
+            set
+            {
+                this._calculatorFormLayout = value;
+                Debug.WriteLine("Calculator Form Changed");
+            }
         }
 
         /// <summary>
@@ -90,6 +108,37 @@ namespace COMP1004_Lesson41
                 e.Cancel = true;
             }
 
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //step 1. create a new about form
+            AboutForm aboutForm = new AboutForm();
+
+            //step 2. show the about form with ShowDialog (a modal method to display the form)
+            aboutForm.ShowDialog();
+        }
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //create a dialog result container
+            DialogResult result;
+            //step 1. create a new form - Options form
+            OptionsForm optionsForm = new OptionsForm();
+
+            //Step 2. set a referance to the PreviousForm property of the Options Form to this form
+            optionsForm.PreviousForm = this;
+            optionsForm.CalculatorLayout = this.CalculatorFormLayout;
+
+            //step 3. show the Options Form with ShowDialog (a modal method to display the form)
+            result = optionsForm.ShowDialog();
+
+            Debug.WriteLine(result.ToString());
         }
     }
 }
